@@ -59,11 +59,11 @@ IF ( NOT CXX11_TESTED )
     ELSE ()
         MESSAGE ( STATUS "C++11 is not supported by your compiler." )
     ENDIF ()
-    INCLUDE_DIRECTORIES ( "${CMAKE_CURRENT_BINARY_DIR}/cxx11" )
 ENDIF ()
 SET ( CXX11_TESTED TRUE CACHE INTERNAL "C++11 features have been tested." )
 
 CONFIGURE_FILE ( "${CMAKE_CURRENT_LIST_DIR}/cxx11_features.hxx.in" "${CMAKE_CURRENT_BINARY_DIR}/cxx11/cxx11_features.hxx" )
+INCLUDE_DIRECTORIES ( "${CMAKE_CURRENT_BINARY_DIR}/cxx11" )
 
 FUNCTION ( CXX11_REQUIRE_FEATURES )
     IF ( NOT CXX11_SUPPORTED )
