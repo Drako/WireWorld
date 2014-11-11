@@ -6,13 +6,17 @@
 #include <algorithm>
 #include <iterator>
 #include <memory>
-#include <vector>
 
 #include <CL/cl.h>
 
 #include <QtCore/QString>
+#include <QtCore/QVector>
 
 namespace ww { namespace cl {
+    class Device
+    {
+    };
+    
     class Platform
     {
     public:
@@ -46,42 +50,31 @@ namespace ww { namespace cl {
         };
 
         template <PlatformInfo Info>
-        QString info() const
+        inline QString info() const
         {
-            std::size_t size;
-            if (clGetPlatformInfo(m_id, Info, 0, nullptr, &size) != CL_SUCCESS)
-                return QString();
-
-            std::vector<char> buffer(size);
-            if (clGetPlatformInfo(m_id, Info, size, buffer.data(), nullptr) != CL_SUCCESS)
-                return QString();
-
-            return QString::fromUtf8(buffer.data());
+            return getInfo(Info);
         }
 
     private:
         cl_platform_id m_id;
+        
+        QString getInfo(PlatformInfo info) const;
     };
-
-#ifdef CXX11_FEATURE_VARIADIC
-    template <template <typename...> class Container>
-#else
-    template <template <typename, typename> class Container>
-#endif
-    Container<Platform, std::allocator<Platform>> get_platforms()
+    
+    namespace detail
     {
-        Container<Platform, std::allocator<Platform>> platforms;
+        QVector<cl_platform_id> getPlatformIDs();
+    }
 
-        cl_uint count;
-        if (clGetPlatformIDs(0, nullptr, &count) != CL_SUCCESS)
-            return platforms;
+    template <template <typename> class Container>
+    Container<Platform> getPlatforms()
+    {
+        Container<Platform> platforms;
+        
+        auto platformIDs = detail::getPlatformIDs();
 
-        std::vector<cl_platform_id> platform_ids(count);
-        if (clGetPlatformIDs(count, platform_ids.data(), nullptr) != CL_SUCCESS)
-            return platforms;
-
-        platforms.resize(count);
-        std::copy(std::begin(platform_ids), std::end(platform_ids), std::begin(platforms));
+        platforms.resize(platformIDs.size());
+        std::copy(std::begin(platformIDs), std::end(platformIDs), std::begin(platforms));
         return platforms;
     }
 }}

@@ -11,8 +11,11 @@ LIST ( APPEND CMAKE_MODULE_PATH
 INCLUDE ( CheckCxx11 )
 CXX11_REQUIRE_FEATURES (
     auto
+    lambda
     nullptr
+    rangefor
     rvalueref
+    trailingreturn
 )
 
 FIND_PACKAGE ( OpenCL REQUIRED )
