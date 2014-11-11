@@ -3,37 +3,22 @@
 
 #cmakedefine CXX11_SUPPORTED
 
-/*
- * auto answer = 42;
- */
 #cmakedefine CXX11_FEATURE_AUTO
-
-/*
- * auto foo(int a, int b) -> int {}
- */
 #cmakedefine CXX11_FEATURE_TRAILINGRETURN
-
-/*
- * int * fail = nullptr;
- */
 #cmakedefine CXX11_FEATURE_NULLPTR
-
-/*
- * int numbers[] = { 42, 23, 1337 };
- * for (int n : numbers) {}
- */
 #cmakedefine CXX11_FEATURE_RANGEFOR
-
-/*
- * auto foo = [](){ std::cout << "foo" << std::endl; };
- */
 #cmakedefine CXX11_FEATURE_LAMBDA
-
-/*
- * int foo(std::initializer_list<int> numbers);
- * foo({1, 1, 2, 3, 5, 8, 13});
- */
 #cmakedefine CXX11_FEATURE_INITLIST
+#cmakedefine CXX11_FEATURE_DEFAULTDELETE
+#cmakedefine CXX11_FEATURE_OVERRIDEFINAL
+#cmakedefine CXX11_FEATURE_EXPLICITCAST
+#cmakedefine CXX11_FEATURE_STRONGENUM
+#cmakedefine CXX11_FEATURE_VARIADIC
+#cmakedefine CXX11_FEATURE_STATICASSERT
+#cmakedefine CXX11_FEATURE_USERLITERAL
+#cmakedefine CXX11_FEATURE_CONSTEXPR
+#cmakedefine CXX11_FEATURE_NOEXCEPT
+#cmakedefine CXX11_FEATURE_RVALUEREF
+#cmakedefine CXX11_FEATURE_TMPALIAS
 
 #endif // CXX11_FEATURES_HXX
-

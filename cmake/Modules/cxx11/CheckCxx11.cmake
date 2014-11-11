@@ -27,6 +27,7 @@ IF ( NOT CXX11_TESTED )
     ENDIF ()
 
     SET ( CXX11_SUPPORTED ${CXX11_SUPPORTED} CACHE INTERNAL "C++11 is supported." )
+    SET ( CXX11_DEFINES ${CXX11_DEFINES} CACHE INTERNAL "C++11 compiler definitions" )
 
     FUNCTION ( CXX11_TEST_FEATURE feature description )
         TRY_COMPILE ( feature_available "${CMAKE_CURRENT_BINARY_DIR}/cxx11" "${CMAKE_CURRENT_LIST_DIR}/cxx11_${feature}.cxx" COMPILE_DEFINITIONS ${CXX11_DEFINES} )
