@@ -15,7 +15,12 @@ int main(int argc, char ** argv)
 
     QListWidget mainWindow;
     for (auto & platform : platforms)
-        mainWindow.addItem(platform.info<cl::Platform::Name>());
+    {
+        auto devices = platform.getDevices<QVector>();
+        
+        for (auto & device : devices)
+            mainWindow.addItem(device.info<cl::Device::Platform>().info<cl::Platform::Name>());
+    }
     mainWindow.show();
 
     return app.exec();

@@ -1,8 +1,67 @@
 #include "opencl.hxx"
 
-#include <utility>
-
 namespace ww { namespace cl {
+    /************************************************************
+     *                        Device                            *
+     ************************************************************/
+    Device::Device(cl_device_id id /* = nullptr */)
+        : m_id(id)
+    {
+    }
+    
+    Device::Device(Device const & source)
+        : m_id(source.m_id)
+    {
+    }
+    
+    Device::~Device()
+    {
+    }
+    
+    Device & Device::operator = (Device const & source)
+    {
+        m_id = source.m_id;
+        return *this;
+    }
+    
+    bool Device::operator ! () const
+    {
+        return m_id == nullptr;
+    }
+
+#ifdef CXX11_FEATURE_EXPLICITCAST
+    Device::operator bool() const
+    {
+        return m_id != nullptr;
+    }
+#else
+    Device::operator safe_bool() const
+    {
+        return (safe_bool)(m_id != nullptr);
+    }
+#endif
+
+    cl_device_id Device::id() const
+    {
+        return m_id;
+    }
+    
+    QByteArray Device::getInfo(Device::DeviceInfo info) const
+    {
+        std::size_t size;
+        if (clGetDeviceInfo(m_id, info, 0, nullptr, &size) != CL_SUCCESS)
+            return QByteArray();
+        
+        QByteArray buffer(size, 0);
+        if (clGetDeviceInfo(m_id, info, size, buffer.data(), nullptr) != CL_SUCCESS)
+            return QByteArray();
+        
+        return buffer;
+    }
+    
+    /************************************************************
+     *                       Platform                           *
+     ************************************************************/
     Platform::Platform(cl_platform_id id /* = nullptr */)
         : m_id(id)
     {
@@ -13,11 +72,6 @@ namespace ww { namespace cl {
     {
     }
 
-    Platform::Platform(Platform && source)
-        : m_id(std::move(source.m_id))
-    {
-    }
-
     Platform::~Platform()
     {
     }
@@ -25,12 +79,6 @@ namespace ww { namespace cl {
     Platform & Platform::operator = (Platform const & source)
     {
         m_id = source.m_id;
-        return *this;
-    }
-
-    Platform & Platform::operator = (Platform && source)
-    {
-        m_id = std::move(source.m_id);
         return *this;
     }
 
@@ -51,6 +99,11 @@ namespace ww { namespace cl {
     }
 #endif
 
+    cl_platform_id Platform::id() const
+    {
+        return m_id;
+    }
+
     QString Platform::getInfo(Platform::PlatformInfo info) const
     {
         std::size_t size;
@@ -62,6 +115,21 @@ namespace ww { namespace cl {
             return QString();
         
         return QString::fromLocal8Bit(buffer.data());
+    }
+    
+    QVector<cl_device_id> Platform::getDeviceIDs() const
+    {
+        QVector<cl_device_id> deviceIDs;
+        
+        cl_uint count;
+        if (clGetDeviceIDs(m_id, CL_DEVICE_TYPE_ALL, 0, nullptr, &count) != CL_SUCCESS)
+            return deviceIDs;
+        
+        deviceIDs.resize(count);
+        if (clGetDeviceIDs(m_id, CL_DEVICE_TYPE_ALL, count, deviceIDs.data(), nullptr) != CL_SUCCESS)
+            deviceIDs.clear();
+        
+        return deviceIDs;
     }
     
     namespace detail
