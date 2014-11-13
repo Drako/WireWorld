@@ -1,9 +1,6 @@
-#include "opencl.hxx"
-
-#include <QtCore/QVector>
+#include "settings.hxx"
 
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QListWidget>
 
 using namespace ww;
 
@@ -11,17 +8,11 @@ int main(int argc, char ** argv)
 {
     QApplication app(argc, argv);
 
-    auto platforms = cl::getPlatforms<QVector>();
-
-    QListWidget mainWindow;
-    for (auto & platform : platforms)
+    Settings settings;
+    if (settings.exec() == QDialog::Accepted)
     {
-        auto devices = platform.getDevices<QVector>();
-
-        for (auto & device : devices)
-            mainWindow.addItem(device.info<cl::Device::Platform>().info<cl::Platform::Name>());
+        // open main window here
+        return app.exec();
     }
-    mainWindow.show();
-
-    return app.exec();
+    return 0;
 }

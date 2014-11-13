@@ -1,3 +1,5 @@
+SET ( CMAKE_AUTOMOC ON )
+
 FILE ( GLOB ww_SOURCES *.cxx )
 FILE ( GLOB ww_HEADERS *.hxx )
 
