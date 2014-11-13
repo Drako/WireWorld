@@ -1,4 +1,5 @@
 #include "opencl.hxx"
+#include "benchmark.hxx"
 
 namespace ww { namespace cl {
     /************************************************************
@@ -48,6 +49,8 @@ namespace ww { namespace cl {
     
     QByteArray Device::getInfo(Device::DeviceInfo info) const
     {
+        // WW_BENCHMARK(ww::cl::Device::getInfo);
+
         std::size_t size;
         if (clGetDeviceInfo(m_id, info, 0, nullptr, &size) != CL_SUCCESS)
             return QByteArray();
@@ -55,7 +58,7 @@ namespace ww { namespace cl {
         QByteArray buffer(size, 0);
         if (clGetDeviceInfo(m_id, info, size, buffer.data(), nullptr) != CL_SUCCESS)
             return QByteArray();
-        
+
         return buffer;
     }
     
@@ -106,6 +109,8 @@ namespace ww { namespace cl {
 
     QString Platform::getInfo(Platform::PlatformInfo info) const
     {
+        // WW_BENCHMARK(ww::cl::Platform::getInfo);
+
         std::size_t size;
         if (clGetPlatformInfo(m_id, info, 0, nullptr, &size) != CL_SUCCESS)
             return QString();
@@ -119,6 +124,8 @@ namespace ww { namespace cl {
     
     QVector<cl_device_id> Platform::getDeviceIDs() const
     {
+        // WW_BENCHMARK(ww::cl::Platform::getDeviceIDs);
+
         QVector<cl_device_id> deviceIDs;
         
         cl_uint count;
@@ -136,6 +143,8 @@ namespace ww { namespace cl {
     {
         QVector<cl_platform_id> getPlatformIDs()
         {
+            // WW_BENCHMARK(ww::cl::detail::getPlatformIDs);
+
             QVector<cl_platform_id> platformIDs;
             
             cl_uint count;
