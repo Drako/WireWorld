@@ -14,6 +14,7 @@
 #endif
 
 #include <QtCore/QByteArray>
+#include <QtCore/QMetaType>
 #include <QtCore/QString>
 #include <QtCore/QVector>
 
@@ -266,5 +267,8 @@ namespace ww { namespace cl {
         return platforms;
     }
 }}
+
+Q_DECLARE_METATYPE(ww::cl::Platform)
+Q_DECLARE_METATYPE(ww::cl::Device)
 
 #endif // WIREWORLD_OPENCL_HXX

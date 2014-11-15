@@ -7,6 +7,8 @@ using namespace ww;
 int main(int argc, char ** argv)
 {
     QApplication app(argc, argv);
+    app.setApplicationName(QStringLiteral("WireWorld"));
+    app.setApplicationDisplayName(QStringLiteral("WireWorld"));
 
     Settings settings;
     if (settings.exec() == QDialog::Accepted)

@@ -3,6 +3,8 @@
 
 #include <QtWidgets/QDialog>
 
+class QComboBox;
+
 namespace ww {
     class Settings
         : public QDialog
@@ -12,6 +14,14 @@ namespace ww {
     public:
         Settings(QWidget * parent = nullptr);
         virtual ~Settings();
+
+    private slots:
+        void loadDevices();
+        void loadDeviceInfo();
+
+    private:
+        QComboBox * m_platform;
+        QComboBox * m_device;
     };
 }
 
