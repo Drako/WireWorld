@@ -127,6 +127,9 @@ namespace ww { namespace cl {
         // WW_BENCHMARK(ww::cl::Platform::getDeviceIDs);
 
         QVector<cl_device_id> deviceIDs;
+
+        if (m_id == nullptr)
+            return deviceIDs;
         
         cl_uint count;
         if (clGetDeviceIDs(m_id, CL_DEVICE_TYPE_ALL, 0, nullptr, &count) != CL_SUCCESS)
