@@ -2,6 +2,7 @@
 #define WIREWORLD_SETTINGS_HXX
 
 #include <QtCore/QAbstractItemModel>
+#include <QtCore/QScopedPointer>
 
 #include <QtWidgets/QDialog>
 
@@ -44,6 +45,19 @@ namespace ww {
     public:
         DeviceInfoModel(QObject * parent = nullptr);
         virtual ~DeviceInfoModel();
+
+        virtual int columnCount(QModelIndex const & parent = QModelIndex()) const;
+        virtual QVariant data(QModelIndex const & index, int role = Qt::DisplayRole) const;
+        virtual Qt::ItemFlags flags(QModelIndex const & index) const;
+        virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const;
+        virtual QModelIndex index(int row, int column, QModelIndex const & parent = QModelIndex()) const;
+        virtual QModelIndex parent(QModelIndex const & index) const;
+        virtual int rowCount(QModelIndex const & parent = QModelIndex()) const;
+
+        void setDevice(cl::Device const & device);
+
+    private:
+        QScopedPointer<cl::Device> m_device;
     };
 }
 
